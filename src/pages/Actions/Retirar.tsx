@@ -16,6 +16,7 @@ import SignOperation from "../../components/Actions/SignOperation"
 import RetirarForm from "../../components/Actions/RetirarForm"
 import ValidityInfoAlert from "../../components/Alerts/ExpiredItemsAlert"
 import { compareDates } from "../../utils/dateFunctions"
+import { getProducts } from "../../features/product/productSlice"
 
 type TProductList = {
     product: TProduct,
@@ -140,6 +141,7 @@ export default function Retirar() {
             }
         }
 
+        dispatch(getProducts())
         setProductList(prsError)
         setLoading(false)
 

@@ -124,7 +124,7 @@ export default function ListOperations({ productFilter }: Props) {
                                                 <Item width='80px' text={item.price} />
                                                 <Item flex={1} text={item.lote} />
                                                 <Item width='90px' text={formatDate(item.validade)} />
-                                                <Item width='70px' text={item.description === 'Retirada' ? -item.quantity : item.quantity} align='center' />
+                                                <Item width='70px' text={item.quantity} align='center' />
                                                 <Item width='80px' text={item.user?.name} />
                                             </ItemsContainer>
                                         </div>

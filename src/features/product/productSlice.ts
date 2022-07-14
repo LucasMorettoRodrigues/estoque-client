@@ -4,7 +4,6 @@ import { TProduct, TProductRequest } from '../../types/TProduct'
 import { TSubProduct } from '../../types/TSubProduct'
 import { getProduct } from '../../utils/functions'
 import { createAdjustStock } from '../AsyncThunkFunctions'
-import { createStockOut } from '../AsyncThunkFunctions'
 
 export const getProducts = createAsyncThunk(
     'products/getProducts',
@@ -137,42 +136,8 @@ export const produtoSlice = createSlice({
         builder.addCase(editSubProduct.pending, (state) => {
             state.status = 'loading'
         })
-        builder.addCase(editSubProduct.fulfilled, (state, action) => {
+        builder.addCase(editSubProduct.fulfilled, (state) => {
             state.status = 'success'
-
-            state.products = state.products
-                .map((item) => item.id === action.payload.product_id
-                    ? {
-                        ...item,
-                        subproducts: [
-                            ...item.subproducts!.filter(item => item.id !== action.payload.id),
-                            action.payload
-                        ]
-                    }
-                    : item
-                )
-        })
-        builder.addCase(editSubProduct.rejected, (state) => {
-            state.status = 'failed'
-        })
-        builder.addCase(createStockOut.fulfilled, (state, action) => {
-            state.status = 'success'
-
-            let updatedProduct = getProduct(state.products, action.payload.product_id)
-
-            updatedProduct = { ...updatedProduct!, stock: updatedProduct!.stock - action.payload.quantity }
-
-            updatedProduct.subproducts = updatedProduct.subproducts?.map(item => (item.lote === action.payload.lote
-                ? { ...item, quantity: item.quantity - action.payload.quantity }
-                : item
-            ))
-
-            state.products = state.products.map(item => (item.id === action.payload.product_id
-                ? updatedProduct!
-                : item
-            ))
-
-            state.products = state.products.map(item => ({ ...item, subproducts: item.subproducts?.filter(i => i.quantity !== 0) }))
         })
         builder.addCase(createAdjustStock.fulfilled, (state, action) => {
             state.status = 'success'

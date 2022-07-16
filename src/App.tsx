@@ -39,6 +39,7 @@ import Aliquoting from "./pages/Aliquot/Aliquoting";
 import NovoProdutoTwo from "./pages/Produtos/CreateProduct";
 import EditProduct from "./pages/Produtos/EditProduct";
 import DashBoard from "./pages/AdminPanel/DashBoard";
+import { getAllNotifications } from "./features/notification/notificationSlice";
 
 function App() {
 
@@ -50,6 +51,7 @@ function App() {
       dispatch(getProducts())
       dispatch(getFornecedores())
       dispatch(getAllHistoric())
+      dispatch(getAllNotifications())
     }
   }, [dispatch, authentication])
 

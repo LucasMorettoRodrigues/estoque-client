@@ -1,6 +1,7 @@
 import { ChangeEvent } from "react"
 import styled from "styled-components"
 import Input from "./Input"
+import Select from "./Select"
 
 const Container = styled.div`
     position: fixed;
@@ -64,11 +65,13 @@ type Props = {
     },
     placeholder?: string,
     onConfirm: () => void,
-    onClose?: () => void
-    onChange?: (e: ChangeEvent<HTMLInputElement>) => void
+    onClose?: () => void,
+    onChange?: (e: ChangeEvent<HTMLInputElement>) => void,
+    onSelectChange?: (e: ChangeEvent<HTMLSelectElement>) => void,
+    options?: { value: string, text: string }[]
 }
 
-export default function ModalInput({ message, placeholder, onConfirm, onClose, onChange }: Props) {
+export default function ModalInput({ message, placeholder, onConfirm, onClose, onChange, options, onSelectChange }: Props) {
     return (
         <Container>
             <Wrapper>
@@ -77,7 +80,16 @@ export default function ModalInput({ message, placeholder, onConfirm, onClose, o
                     <ErrorsContainer>
                         <p>{message.message}</p>
                     </ErrorsContainer>
-                    <Input onChange={onChange} required name='input' placeholder={placeholder}></Input>
+                    {options && options.length > 0
+                        ? <Select onChange={onSelectChange} required name='input'>
+                            <option></option>
+                            {options.map((option, index) => (
+                                <option value={option.value} key={index}>{option.text}</option>
+                            ))}
+                        </Select>
+                        : <Input onChange={onChange} required name='input' placeholder={placeholder}></Input>
+
+                    }
                     <ButtonContainer>
                         <Button bg={'#ff3232'} onClick={onClose}>Cancelar</Button>
                         <Button bg={'#3dc73d'} onClick={onConfirm}>Confirmar</Button>

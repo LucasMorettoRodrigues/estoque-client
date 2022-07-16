@@ -5,8 +5,8 @@ import { TNotification } from '../../types/TNotification'
 
 type notificationRequest = {
     notification: TNotification
-    username: string
-    password: string
+    username?: string
+    password?: string
 }
 
 export const createNotification = createAsyncThunk(

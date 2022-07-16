@@ -23,14 +23,16 @@ const CSelect = styled.select`
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
     name: string,
-    label: string,
+    label?: string,
     display?: string,
 }
 
 export default function Select({ name, label, display, ...rest }: SelectProps) {
     return (
         <>
-            <Label htmlFor={name} display={display}>{label}</Label>
+            {label &&
+                <Label htmlFor={name} display={display}>{label}</Label>
+            }
             <CSelect id={name} {...rest}></CSelect>
         </>
     )

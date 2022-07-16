@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { logout } from "../../services/auth.service";
 import { updateAuthentication } from '../../features/authentication/authentication'
-import { productsToAliquotSelector } from "../../app/selectors";
+import { productsToAliquotSelector, scheduleSelector } from "../../app/selectors";
 
 const Container = styled.div`
     background-color: #5fb4ff;
@@ -76,11 +76,19 @@ export default function Navbar() {
 
     const auth = useAppSelector(state => state.authentication)
     const productsToAliquot = useAppSelector(productsToAliquotSelector)
+    const schedule = useAppSelector(scheduleSelector)[0]
     const dispatch = useAppDispatch()
 
     const handleOnClick = () => {
         logout()
         dispatch(updateAuthentication())
+    }
+
+    const getDays = () => {
+        var date1 = new Date();
+        var date2 = new Date(schedule.data);
+        var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+        return Math.ceil(timeDiff / (1000 * 3600 * 24));
     }
 
     return (
@@ -123,6 +131,13 @@ export default function Navbar() {
                     }
                 </Wrapper>
             </Nav>
+            {schedule &&
+                <div style={{ backgroundColor: '#309eff', color: 'white' }}>
+                    <h3 style={{ textAlign: 'center', fontSize: '14px', padding: '6px', fontWeight: 400 }}>
+                        Você possui {getDays()} {getDays() === 1 ? 'dia' : 'dias'} para fazer o inventário!
+                    </h3>
+                </div>
+            }
         </Container>
     )
 }

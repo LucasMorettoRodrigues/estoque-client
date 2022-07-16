@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { useAppDispatch } from "../../app/hooks"
 import { createAdjustStock } from "../../features/AsyncThunkFunctions"
 import { TMessage } from "../../types/TMessage"
 import Mensagem from "../UI/Mensagem"
@@ -10,10 +10,6 @@ type Props = {
 }
 
 export default function AdjustButton({ subProduct }: Props) {
-
-    const a = useAppSelector(state => state.authentication)
-
-    console.log(a)
 
     const dispatch = useAppDispatch()
     const [text, setText] = useState('Ajustar')

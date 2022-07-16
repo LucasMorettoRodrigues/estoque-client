@@ -13,8 +13,9 @@ import InventarioList from "../../components/Inventario/InventarioList"
 import InventoryAnalisys from "../../components/Inventario/InventoryAnalisys"
 import Button from "../../components/UI/Button"
 import { useAppDispatch } from "../../app/hooks"
-import { deleteNotification } from "../../features/notification/notificationSlice"
+import { createNotification, deleteNotification } from "../../features/notification/notificationSlice"
 import { formatDate } from "../../utils/dateFunctions"
+import ModalInput from "../../components/UI/ModalInput"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -32,6 +33,8 @@ export default function VizualizarInventario() {
 
     const products: IProductInventory[] = state.data
     const [message, setMessage] = useState<TMessage>()
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [daysUntilNextInventory, setDaysUntilNextInventory] = useState('')
 
     const handleMessage = () => {
         if (message!.title === 'Sucesso') {
@@ -50,8 +53,40 @@ export default function VizualizarInventario() {
         }
     }
 
+    const handleScheduleInventory = () => {
+        setIsModalOpen(true)
+    }
+
+    const handleConfirmScheduleInventory = async () => {
+
+        if (!daysUntilNextInventory) {
+            return
+        }
+
+        const inventoryDate = new Date(state.createdAt)
+        var scheduleDate = inventoryDate.setDate(inventoryDate.getDate() + parseInt(daysUntilNextInventory));
+        const notification = { description: 'Agendamento de Inventário', data: new Date(scheduleDate) }
+
+        try {
+            dispatch(createNotification({ notification })).unwrap()
+            setIsModalOpen(false)
+            setMessage({ title: "Sucesso", message: "O próximo inventário foi agendado." })
+        } catch (error) {
+            setIsModalOpen(false)
+            setMessage({ title: "Erro", message: "Não foi possível agendar o inventário." })
+        }
+    }
+
     return (
         <>
+            {isModalOpen &&
+                <ModalInput
+                    message={{ title: "Agendar Inventário", message: "Selecione o prazo até o próximo inventário." }}
+                    onConfirm={handleConfirmScheduleInventory}
+                    onClose={() => setIsModalOpen(false)}
+                    onSelectChange={(e) => setDaysUntilNextInventory(e.target.value)}
+                    options={[{ value: '15', text: '15 dias' }, { value: '30', text: '30 dias' }, { value: '45', text: '45 dias' }]}
+                />}
             {message && <Mensagem onClick={handleMessage} message={message} />}
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -122,7 +157,10 @@ export default function VizualizarInventario() {
                 Inventário completo
             </h3>
             <InventarioList products={products} />
-            <Button style={{ float: 'right', margin: '30px 0' }} text='Deletar Inventário' bg='red' onClick={handleDelete} />
+            <div style={{ margin: '30px 0', display: 'flex', justifyContent: 'flex-end' }}>
+                <Button style={{ marginLeft: '20px' }} text='Agendar Inventário' bg='green' onClick={handleScheduleInventory} />
+                <Button style={{ marginLeft: '20px' }} text='Deletar Inventário' bg='red' onClick={handleDelete} />
+            </div>
         </>
     )
 }

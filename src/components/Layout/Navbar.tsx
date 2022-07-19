@@ -132,7 +132,7 @@ export default function Navbar() {
                 </Wrapper>
             </Nav>
             {schedule &&
-                <div style={{ backgroundColor: '#309eff', color: 'white' }}>
+                <div style={{ backgroundColor: '#0088ff', color: '#ffffff' }}>
                     <h3 style={{ textAlign: 'center', fontSize: '14px', padding: '6px', fontWeight: 400 }}>
                         Você possui {getDays()} {getDays() === 1 ? 'dia' : 'dias'} para fazer o inventário!
                     </h3>

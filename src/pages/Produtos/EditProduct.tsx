@@ -6,9 +6,11 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import Button from "../../components/UI/Button"
 import Form from "../../components/UI/Form"
 import Input from "../../components/UI/Input"
+import Mensagem from "../../components/UI/Mensagem"
 import Select from "../../components/UI/Select"
 import Title from "../../components/UI/Title"
 import { editProduct } from "../../features/product/productSlice"
+import { TMessage } from "../../types/TMessage"
 import { TProductRequest } from "../../types/TProduct"
 import { getProduct } from "../../utils/functions"
 import ListOperations from "../Historic/ListOperations"
@@ -34,6 +36,7 @@ export default function EditProduct() {
     const location = useLocation()
     const product = location.state as ProductState;
     const products = useAppSelector(state => state.product.products)
+    const [message, setMessage] = useState<TMessage>(null)
 
     const options = products.map(i => ({
         label: `${i.id} - ${i.name} - ${i.brand} - ${i.unit}`, id: i.id
@@ -108,12 +111,23 @@ export default function EditProduct() {
         }
     }
 
+    const handleArchiveProduct = async (id: number) => {
+        try {
+            await dispatch(editProduct({ id: product.id, product: { hide: true } })).unwrap()
+            setMessage({ title: 'Sucesso', message: 'O produto foi arquivado.' })
+        } catch (error) {
+            setMessage({ title: 'Erro', message: 'Não foi possível arquivar o produto.' })
+        }
+
+    }
+
     return (
         <>
+            {message && <Mensagem onClick={() => setMessage(null)} message={message} />}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Title title='Editar Produto' />
                 <Button
-                    onClick={() => dispatch(editProduct({ id: product.id, product: { hide: true } }))}
+                    onClick={() => handleArchiveProduct(product.id)}
                     text='Arquivar'
                     bg='red'
                 />

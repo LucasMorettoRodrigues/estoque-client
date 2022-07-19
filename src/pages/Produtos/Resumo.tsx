@@ -45,12 +45,12 @@ export default function Produtos() {
     }, [sort, products])
 
     useEffect(() => {
-        let filtered = []
+        let filtered = mergeProducts(sortedProducts)
+
+        console.log(filtered)
 
         if (missingFilter) {
-            filtered = mergeProducts(sortedProducts).filter(i => i.stock < i.min_stock)
-        } else {
-            filtered = mergeProducts(sortedProducts)
+            filtered = filtered.filter(i => i.stock < i.min_stock)
         }
 
         if (searchFilter) {

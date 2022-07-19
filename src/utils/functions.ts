@@ -56,6 +56,10 @@ export const mergeProducts = (products: TProduct[]): TProduct[] => {
     let res: TProduct[] = []
 
     for (let product of products) {
+        if (!product.providers) {
+            product = { ...product, providers: [] }
+        }
+
         if (!res.find(i => i.name === product.name)) {
             res = [...res, product]
 
@@ -66,14 +70,15 @@ export const mergeProducts = (products: TProduct[]): TProduct[] => {
                         ? {
                             ...i,
                             stock: i.stock + product.stock,
-                            subproducts: i.subproducts!.concat(i.subproducts!)
+                            subproducts: i.subproducts!.concat(product.subproducts!),
+                            providers: Array.from(new Set(product.providers!.concat(i.providers!)))
                         }
                         : i
                 )
                 )
         }
     }
-
+    console.log('sk', res)
     return res
 }
 

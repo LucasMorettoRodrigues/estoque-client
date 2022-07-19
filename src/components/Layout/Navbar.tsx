@@ -71,6 +71,37 @@ const Badge = styled.div`
     border-radius: 50%;
     background-color: #f58c41;
 `
+const AnimatedText = styled.h3<{ reverse?: boolean }>`
+    animation: ${props => props.reverse ? 'myAnim 20s infinite' : 'myAnim 20s infinite reverse'};
+    position: absolute;
+    margin-left: 50%;
+    margin-top: 4px;
+    transform: translateX(-50%);
+    font-size: 14px;
+    font-weight: 400;
+
+    @keyframes myAnim {
+        0% {
+            opacity: 0;
+        }
+
+        10% {
+            opacity: 1;
+        }
+        
+        45% {
+            opacity: 1;
+        }
+        
+        55% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 0;
+        }
+    }
+`
 
 export default function Navbar() {
 
@@ -107,13 +138,26 @@ export default function Navbar() {
         const descartaveisDate = scheduleDescartaveis ? getDays(scheduleDescartaveis.data) : 0
         const kitsDate = scheduleKits ? getDays(scheduleKits.data) : 0
 
-        if (descartaveisDate === kitsDate) {
-            return inventoryBar('Descartáveis e Kits/Reagentes', descartaveisDate)
-        } else if (descartaveisDate > kitsDate) {
-            return inventoryBar('Descartáveis', descartaveisDate)
-        } else {
-            return inventoryBar('Kits/Reagentes', kitsDate)
+        if (!scheduleDescartaveis) {
+            inventoryBar('Kits/Reagentes', kitsDate)
         }
+
+        if (!scheduleKits) {
+            return inventoryBar('Descartáveis', descartaveisDate)
+        }
+
+        return (
+            <>
+                <div style={{ backgroundColor: '#0088ff', color: '#ffffff', position: 'relative', height: '26px' }}>
+                    <AnimatedText>
+                        Você possui {descartaveisDate} {descartaveisDate === 1 ? 'dia' : 'dias'} para fazer o inventário dos Descartáveis!
+                    </AnimatedText>
+                    <AnimatedText reverse={true}>
+                        Você possui {kitsDate} {kitsDate === 1 ? 'dia' : 'dias'} para fazer o inventário dos Kits/Reagentes!
+                    </AnimatedText>
+                </div>
+            </>
+        )
     }
 
     return (

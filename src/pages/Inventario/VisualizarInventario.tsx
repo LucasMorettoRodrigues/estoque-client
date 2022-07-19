@@ -63,9 +63,14 @@ export default function VizualizarInventario() {
             return
         }
 
+        let category = products[0].category
+        if (category === 'Kits' || category === 'Reagentes') {
+            category = 'Kits e Reagentes'
+        }
+
         const inventoryDate = new Date(state.createdAt)
         var scheduleDate = inventoryDate.setDate(inventoryDate.getDate() + parseInt(daysUntilNextInventory));
-        const notification = { description: 'Agendamento de Inventário', data: new Date(scheduleDate) }
+        const notification = { description: `Agendamento de Inventário - ${category}`, data: new Date(scheduleDate) }
 
         try {
             dispatch(createNotification({ notification })).unwrap()

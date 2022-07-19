@@ -11,5 +11,8 @@ export const archivedProducts = (state: RootState) =>
 export const inventoriesSelector = (state: RootState) =>
     state.notification.notifications.filter(i => i.description === 'Inventário')
 
-export const scheduleSelector = (state: RootState) =>
-    state.notification.notifications.filter(i => i.description === 'Agendamento de Inventário')
+export const scheduleKitsSelector = (state: RootState) =>
+    state.notification.notifications.filter(i => i.description === "Agendamento de Inventário - Kits e Reagentes")
+
+export const scheduleDescartaveisSelector = (state: RootState) =>
+    state.notification.notifications.filter(i => i.description === "Agendamento de Inventário - Descartáveis")

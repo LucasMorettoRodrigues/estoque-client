@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { logout } from "../../services/auth.service";
 import { updateAuthentication } from '../../features/authentication/authentication'
-import { productsToAliquotSelector, scheduleSelector } from "../../app/selectors";
+import { productsToAliquotSelector, scheduleDescartaveisSelector, scheduleKitsSelector } from "../../app/selectors";
 
 const Container = styled.div`
     background-color: #5fb4ff;
@@ -76,7 +76,8 @@ export default function Navbar() {
 
     const auth = useAppSelector(state => state.authentication)
     const productsToAliquot = useAppSelector(productsToAliquotSelector)
-    const schedule = useAppSelector(scheduleSelector)[0]
+    const scheduleKits = useAppSelector(scheduleKitsSelector)[0]
+    const scheduleDescartaveis = useAppSelector(scheduleDescartaveisSelector)[0]
     const dispatch = useAppDispatch()
 
     const handleOnClick = () => {
@@ -84,11 +85,35 @@ export default function Navbar() {
         dispatch(updateAuthentication())
     }
 
-    const getDays = () => {
+    const getDays = (date: string) => {
         var date1 = new Date();
-        var date2 = new Date(schedule.data);
+        var date2 = new Date(date);
         var timeDiff = Math.abs(date2.getTime() - date1.getTime());
         return Math.ceil(timeDiff / (1000 * 3600 * 24));
+    }
+
+    const inventoryBar = (category: string, days: number) =>
+        <div style={{ backgroundColor: '#0088ff', color: '#ffffff' }}>
+            <h3 style={{ textAlign: 'center', fontSize: '14px', padding: '6px', fontWeight: 400 }}>
+                Você possui {days} {days === 1 ? 'dia' : 'dias'} para fazer o inventário dos {category}!
+            </h3>
+        </div>
+
+    const inventoryScheduleBar = () => {
+        if (!scheduleDescartaveis && !scheduleKits) {
+            return
+        }
+
+        const descartaveisDate = scheduleDescartaveis ? getDays(scheduleDescartaveis.data) : 0
+        const kitsDate = scheduleKits ? getDays(scheduleKits.data) : 0
+
+        if (descartaveisDate === kitsDate) {
+            return inventoryBar('Descartáveis e Kits/Reagentes', descartaveisDate)
+        } else if (descartaveisDate > kitsDate) {
+            return inventoryBar('Descartáveis', descartaveisDate)
+        } else {
+            return inventoryBar('Kits/Reagentes', kitsDate)
+        }
     }
 
     return (
@@ -131,13 +156,7 @@ export default function Navbar() {
                     }
                 </Wrapper>
             </Nav>
-            {schedule &&
-                <div style={{ backgroundColor: '#0088ff', color: '#ffffff' }}>
-                    <h3 style={{ textAlign: 'center', fontSize: '14px', padding: '6px', fontWeight: 400 }}>
-                        Você possui {getDays()} {getDays() === 1 ? 'dia' : 'dias'} para fazer o inventário!
-                    </h3>
-                </div>
-            }
+            {inventoryScheduleBar()}
         </Container>
     )
 }

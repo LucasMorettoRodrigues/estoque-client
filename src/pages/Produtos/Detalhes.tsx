@@ -170,7 +170,7 @@ export default function Detalhes() {
                                         <Item flex={3} text={item.name} fontSize='12px' />
                                         <Item flex={2} text={item.observation} fontSize='12px' />
                                         <Item width="90px" text={item.code} fontSize='12px' />
-                                        <Item flex={2} text={item.providers?.map((i) => `${i} `)} fontSize='12px' />
+                                        <Item flex={2} text={item.providers?.map(i => `${i}`).toString().replaceAll(',', ', ')} fontSize='12px' />
                                         <Item width="90px" text={item.category} fontSize='12px' />
                                         <Item width="130px" text={item.brand} fontSize='12px' />
                                         <Item width="65px" text={item.unit} fontSize='12px' />

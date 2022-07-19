@@ -91,7 +91,7 @@ export default function Produtos() {
                             <Container key={item.id}>
                                 <ItemsContainer onClick={() => navigate(`/produtos/${item.id}/historico`, { state: item })}>
                                     <Item flex={8} text={item.name} />
-                                    <Item flex={2} text={item.providers?.map(i => `${i} `)} />
+                                    <Item flex={2} text={item.providers?.map(i => `${i}`).toString().replaceAll(',', ', ')} />
                                     <Item flex={1} text={item.stock} align='center'
                                         bg={item.stock < item.min_stock
                                             ? '#ff5353'

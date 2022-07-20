@@ -200,7 +200,9 @@ export default function Navbar() {
                     }
                 </Wrapper>
             </Nav>
-            {inventoryScheduleBar()}
+            {auth.authenticated &&
+                inventoryScheduleBar()
+            }
         </Container>
     )
 }

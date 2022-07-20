@@ -13,14 +13,27 @@ const HeaderContainer = styled.div`
     position: sticky;
     top: 0;
 `
+const Title = styled.h3`
+    margin-top: 40px; 
+    margin-bottom: 10px;
+`
 
 type Props = {
-    products: IProductInventory[]
+    products: IProductInventory[],
+    title: string
 }
 
-export default function InventarioList({ products }: Props) {
+export default function InventarioList({ products, title }: Props) {
+
+    if (products.length === 0) {
+        return <></>
+    }
+
     return (
         <>
+            <Title>
+                {title}
+            </Title>
             <ListWrapper>
                 <HeaderContainer>
                     <ListHeader fontSize='12px'>

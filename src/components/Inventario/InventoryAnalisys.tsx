@@ -5,29 +5,18 @@ import ChartPie from "../Charts/PieChart"
 const InfoWrapper = styled.div`
     display: flex;
     align-items: center;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px 0;
+    border: 2px solid lightgray;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `
-const InfoContainer = styled.div`
-    display: flex;
-    margin: 10px auto;
-    max-width: 330px;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 20px;
-    border: solid 4px lightgray;
-    border-radius: 50px;
-    display: none;
+const ChartContainer = styled.div`
+    flex: 1;
+    height: 300px;
 `
-const Text = styled.p`
-    color: #333;
-    font-size: 20px;
-    font-weight: 400;
-`
-const Value = styled.p`
-    color: #555;
-    font-size: 26px;
-    font-weight: bold;
+const SubTitle = styled.h3`
+    text-align: center;
 `
 
 type Props = {
@@ -36,7 +25,6 @@ type Props = {
 
 export default function InventoryAnalisys({ products }: Props) {
 
-    const allProducts = products.map(i => i.subproducts!.length).reduce((sum, i) => sum + i, 0)
     const divergentProducts = products.map(i => i.subproducts!.filter(j => j.reason).length).reduce((sum, i) => sum + i, 0)
     const rigthProducts = products.map(i => i.subproducts!.filter(j => !j.reason).length).reduce((sum, i) => sum + i, 0)
 
@@ -62,28 +50,18 @@ export default function InventoryAnalisys({ products }: Props) {
     ]
 
     return (
-        <>
-            <InfoWrapper>
-                <div style={{ flex: 1, height: '300px' }}>
-                    <h3 style={{ textAlign: 'center' }}>Resultado do inventário </h3>
-                    <ChartPie data={data} radius={90} />
-                </div>
-                <div style={{ flex: 1, height: '300px' }}>
-                    <h3 style={{ textAlign: 'center' }}>Motivos da divergência</h3>
+        <InfoWrapper>
+            <ChartContainer style={{ flex: 1, height: '300px' }}>
+                <SubTitle style={{ textAlign: 'center' }}>Resultado do inventário </SubTitle>
+                <ChartPie data={data} radius={90} />
+            </ChartContainer>
+            {
+                divergentProducts > 0 &&
+                <ChartContainer style={{ flex: 1, height: '300px' }}>
+                    <SubTitle style={{ textAlign: 'center' }}>Motivos da divergência</SubTitle>
                     <ChartPie data={test} radius={90} />
-                </div>
-            </InfoWrapper>
-            <div style={{ flex: 1 }}>
-                <InfoContainer>
-                    <Text>Total de Itens:</Text>
-                    <Value>{allProducts}</Value>
-                    <Text>Itens em desacordo:</Text>
-                    <Value>{divergentProducts}</Value>
-                    <Text>Porcentagem em desacordo:</Text>
-                    <Value>{(divergentProducts * 100 / allProducts).toFixed(2)}%</Value>
-                </InfoContainer>
-            </div>
-        </>
-
+                </ChartContainer>
+            }
+        </InfoWrapper>
     )
 }

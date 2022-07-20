@@ -96,6 +96,7 @@ export default function VizualizarInventario() {
 
             <div style={{ margin: '30px 0' }}>
                 <InventarioList
+                    adjustButton={true}
                     products={divergentProducts}
                     title={'Produtos com Divergência'}
                 />

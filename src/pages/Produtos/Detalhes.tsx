@@ -52,7 +52,7 @@ export default function Detalhes() {
     const navigate = useNavigate()
 
     const productsData = useAppSelector(state => state.product.products)
-    const stockOuts = useAppSelector(state => state.historic.historic.filter(i => i.description === 'stockOut'))
+    const stockOuts = useAppSelector(state => state.historic.historic.filter(i => i.description === 'Retirada'))
     const providerFilter = useAppSelector(state => state.product.providerFilter)
     const categoryFilter = useAppSelector(state => state.product.categoryFilter)
     const searchFilter = useAppSelector(state => state.product.searchFilter)

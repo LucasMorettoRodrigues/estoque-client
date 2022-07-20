@@ -19,6 +19,7 @@ import ListWrapper from "../../components/UI/ListWrapper"
 import Select from "../../components/UI/Select"
 import Input from "../../components/UI/Input"
 import { formatDate, isExpired } from "../../utils/dateFunctions"
+import { activeProducts } from "../../app/selectors"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -38,7 +39,7 @@ const reasons = [
 
 export default function Inventario() {
 
-    const productsData = useAppSelector(state => state.product.products)
+    const productsData = useAppSelector(activeProducts)
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 

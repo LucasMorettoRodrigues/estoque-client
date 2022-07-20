@@ -17,6 +17,13 @@ export default function ListInventarios() {
 
     const notifications = useAppSelector(inventoriesSelector)
 
+    const getCategory = (category: string) => {
+        if (category === "Descartáveis") return "Descartáveis"
+        if (category === "Reagentes" || category === "Kits") return "Reagentes e Kits"
+
+        return ""
+    }
+
     return (
         <>
             <AdminPanelHeader title={'Histórico de Inventários'} active={'Inventories'} />
@@ -25,6 +32,7 @@ export default function ListInventarios() {
                 <ListHeader>
                     <Item width="100px" text='Data' />
                     <Item width="90px" text='Hora' />
+                    <Item width="140px" text='Categoria' />
                     <Item flex={1} text='Responsável' />
                 </ListHeader>
                 <>
@@ -34,6 +42,7 @@ export default function ListInventarios() {
                                 <ItemsContainer onClick={() => navigate(`/inventarios/${item.id}`, { state: item })}>
                                     <Item width="100px" text={formatDate(item.createdAt)} />
                                     <Item width='90px' text={item.createdAt?.slice(11, 19)} />
+                                    <Item width="140px" text={getCategory(item.data[0].category)} />
                                     <Item flex={1} text={item.user!.name} />
                                 </ItemsContainer>
                             </Container>

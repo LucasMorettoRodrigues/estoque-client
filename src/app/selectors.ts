@@ -8,6 +8,9 @@ export const productsToAliquotSelector = (state: RootState) =>
 export const archivedProducts = (state: RootState) =>
     state.product.products.filter(i => i.hide === true)
 
+export const activeProducts = (state: RootState) =>
+    state.product.products.filter(i => i.hide === false)
+
 export const inventoriesSelector = (state: RootState) =>
     state.notification.notifications.filter(i => i.description === 'Inventário')
 

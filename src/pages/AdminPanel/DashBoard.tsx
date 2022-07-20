@@ -1,10 +1,21 @@
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts'
+import styled from 'styled-components'
 import { useAppSelector } from '../../app/hooks'
 import { inventoriesSelector } from '../../app/selectors'
 import AdminPanelHeader from '../../components/AdminPanel/AdminPanelHeader'
 import ChartPie from '../../components/Charts/PieChart'
 import { TNotification } from '../../types/TNotification'
 import { IProductInventory } from '../../types/TProduct'
+
+const ChartsContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    padding: 40px 0;
+    border: 2px solid lightgray;
+    border-radius: 10px;
+`
 
 interface IInventory extends TNotification {
     data: IProductInventory[]
@@ -55,7 +66,7 @@ export default function DashBoard() {
     return (
         <>
             <AdminPanelHeader title='DashBoard' active='DashBoard' />
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <ChartsContainer>
                 {data.length > 0 &&
                     <>
                         <h3 style={{ textAlign: 'center', marginBottom: '20px' }}>Evolução da razão de itens em desacordo</h3>
@@ -77,7 +88,7 @@ export default function DashBoard() {
                 }
                 <h3 style={{ textAlign: 'center', marginTop: '50px' }}>Ocorrência de Motivos</h3>
                 <ChartPie data={test} radius={100} />
-            </div>
+            </ChartsContainer>
         </>
     )
 }

@@ -16,12 +16,26 @@ const HeaderContainer = styled.div`
     position: sticky;
     top: 0;
 `
+const Message = styled.p`
+    margin-top: 50px;
+    text-align: center;
+    font-style: italic;
+    color: #888;
+`
 
 export default function ToAliquot() {
 
     const navigate = useNavigate()
 
-    const productsOnHold = useAppSelector(productsToAliquotSelector)
+    const productsToAliquot = useAppSelector(productsToAliquotSelector)
+
+    if (productsToAliquot.length === 0) {
+        return (
+            <>
+                <Message>Nenhum produto em espera.</Message>
+            </>
+        )
+    }
 
     return (
         <>
@@ -41,7 +55,7 @@ export default function ToAliquot() {
                 </HeaderContainer>
                 <>
                     {
-                        productsOnHold.map((item) => (
+                        productsToAliquot.map((item) => (
                             <Container key={item.id}>
 
                                 <ItemsContainer >

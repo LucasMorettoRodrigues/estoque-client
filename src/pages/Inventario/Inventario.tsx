@@ -32,7 +32,8 @@ const HeaderContainer = styled.div`
 const reasons = [
     'Entrada/saída incorretos',
     'Erro de digitação',
-    'Sem identificação',
+    'Erro não identificado',
+    'Bug do sistema',
     'Erro do local de armazenamento',
     'Contagem inventário incorreta'
 ]

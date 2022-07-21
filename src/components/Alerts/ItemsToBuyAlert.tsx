@@ -26,7 +26,7 @@ export default function ItemsToBuyAlert() {
         const itemsToBuy: AlertList[] = []
 
         const productsList = products
-            .filter(pro => pro.delivery_time && pro.subproducts!.length > 0)
+            .filter(pro => pro.delivery_time && pro.subproducts!.length > 0 && !pro.subproducts!.find(sub => !sub.validade))
             .map(pro => (
                 {
                     ...pro,

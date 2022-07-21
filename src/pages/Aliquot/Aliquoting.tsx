@@ -135,7 +135,9 @@ export default function Aliquoting() {
                     onClick={handleAddAliquot}
                     completed={completed}
                 >
-                    <p style={{ margin: '10px', textAlign: 'center' }}>Você percisa fazer {originProduct.qty_to_child} alíquotas.</p>
+                    <p style={{ margin: '10px', textAlign: 'center' }}>
+                        Coloque {originProduct.qty_to_child} alíq. no est. físico do Lab.
+                    </p>
                     <ImArrowRight
                         size={80}
                         color='green'

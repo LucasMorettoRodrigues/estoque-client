@@ -34,7 +34,7 @@ const reasons = [
     'Erro de digitação',
     'Erro não identificado',
     'Bug do sistema',
-    'Erro do local de armazenamento',
+    'Local de armazenamento incorreto',
     'Contagem inventário incorreta'
 ]
 

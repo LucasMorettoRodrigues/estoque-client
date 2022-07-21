@@ -136,7 +136,7 @@ export default function Aliquoting() {
                     completed={completed}
                 >
                     <p style={{ margin: '10px', textAlign: 'center' }}>
-                        Coloque {originProduct.qty_to_child} alíq. no est. físico do Lab.
+                        Coloque {originProduct.qty_to_child} alíq. no estoque físico
                     </p>
                     <ImArrowRight
                         size={80}

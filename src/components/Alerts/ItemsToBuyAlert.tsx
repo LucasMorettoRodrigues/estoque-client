@@ -37,6 +37,8 @@ export default function ItemsToBuyAlert() {
             ))
 
         productsList.forEach(pro => {
+            if (!pro!.subproducts!.validade) return
+
             if (isTimeToBuy(pro!.subproducts!.validade!.slice(0, 10), pro.delivery_time!)) {
                 itemsToBuy.push({ ...pro.subproducts, product: pro.name })
             }

@@ -51,7 +51,9 @@ export const getSubProductByLote = (products: TProduct[], product_id: number | u
 }
 
 export const mergeProducts = (products: TProduct[]): TProduct[] => {
-    products = products.filter(i => i.hide === false)
+    products = products.filter(
+        (product) => (product.hide === false && !product.product_child_id)
+    )
 
     let res: TProduct[] = []
 

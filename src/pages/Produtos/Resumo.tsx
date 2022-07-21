@@ -47,8 +47,6 @@ export default function Produtos() {
     useEffect(() => {
         let filtered = mergeProducts(sortedProducts)
 
-        console.log(filtered)
-
         if (missingFilter) {
             filtered = filtered.filter(i => i.stock < i.min_stock)
         }

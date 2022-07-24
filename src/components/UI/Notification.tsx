@@ -69,7 +69,7 @@ export default function Notification({ notification }: Props) {
         }
 
         if (item.description === 'Inventário') {
-            dispatch(archiveNotification({ ...item, archived: true }))
+            dispatch(deleteNotification(item.id!))
         }
     }
 
@@ -79,8 +79,8 @@ export default function Notification({ notification }: Props) {
         }
 
         if (item.description === 'Inventário') {
-            dispatch(archiveNotification({ ...item, archived: true }))
-            navigate(`/inventarios/${item.id}`, { state: item })
+            navigate(`/inventarios/${item.data.inventory_id}`)
+            dispatch(deleteNotification(item.id!))
         }
     }
 

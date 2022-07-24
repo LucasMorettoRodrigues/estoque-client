@@ -6,6 +6,7 @@ import ListHeader from "../../components/List/ListHeader"
 import ListWrapper from "../UI/ListWrapper"
 import { formatDate } from "../../utils/dateFunctions"
 import AdjustButton from "./AdjustButton"
+import { TInventory } from "../../types/TInventory"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -23,9 +24,10 @@ type Props = {
     products: IProductInventory[],
     title: string
     adjustButton?: boolean
+    inventory: TInventory
 }
 
-export default function InventarioList({ products, title, adjustButton }: Props) {
+export default function InventarioList({ products, title, adjustButton, inventory }: Props) {
 
     if (products.length === 0) {
         return <></>
@@ -97,8 +99,8 @@ export default function InventarioList({ products, title, adjustButton }: Props)
                                                 }
                                             </>
                                             <>
-                                                {adjustButton &&
-                                                    <AdjustButton subProduct={subitem} />
+                                                {adjustButton && !subitem.adjusted &&
+                                                    <AdjustButton subProduct={subitem} inventory={inventory} />
                                                 }
                                             </>
                                         </ItemsContainer>

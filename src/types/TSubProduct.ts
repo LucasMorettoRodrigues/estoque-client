@@ -10,4 +10,5 @@ export interface TSubProductInventory extends TSubProduct {
     inventory: number,
     justification: string,
     reason: string,
+    adjusted: boolean
 }

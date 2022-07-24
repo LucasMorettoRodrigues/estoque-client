@@ -4,12 +4,15 @@ import { createAdjustStock } from "../../features/AsyncThunkFunctions"
 import { TMessage } from "../../types/TMessage"
 import Mensagem from "../UI/Mensagem"
 import Button from "../UI/Button"
+import { TInventory } from "../../types/TInventory"
+import { editInventory, getAllInventories } from "../../features/inventory/inventorySlice"
 
 type Props = {
+    inventory: TInventory,
     subProduct: any
 }
 
-export default function AdjustButton({ subProduct }: Props) {
+export default function AdjustButton({ subProduct, inventory }: Props) {
 
     const dispatch = useAppDispatch()
     const [text, setText] = useState('Ajustar')
@@ -26,7 +29,27 @@ export default function AdjustButton({ subProduct }: Props) {
                     quantity: subProduct.inventory,
                     subproduct_id: subProduct.id
                 })).unwrap()
+
                 setText('Ajustado')
+
+                await dispatch(editInventory({
+                    id: inventory.id,
+                    body: {
+                        inventory: inventory.inventory.map(item => (
+                            item.id === subProduct.product_id
+                                ? {
+                                    ...item, subproducts: item.subproducts.map(subItem => (
+                                        subItem.id === subProduct.id
+                                            ? { ...subItem, adjusted: true }
+                                            : subItem
+                                    ))
+                                }
+                                : item
+                        ))
+                    }
+                })).unwrap()
+
+                await dispatch(getAllInventories()).unwrap()
             } catch (error) {
                 setText('Erro')
             }

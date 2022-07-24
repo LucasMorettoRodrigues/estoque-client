@@ -102,6 +102,7 @@ export default function VizualizarInventario() {
             <div style={{ margin: '30px 0' }}>
                 <InventarioList
                     adjustButton={true}
+                    inventory={selectedInventory}
                     products={divergentProducts}
                     title={'Produtos com Divergência'}
                 />
@@ -110,6 +111,7 @@ export default function VizualizarInventario() {
                 <InventarioList
                     products={products}
                     title='Inventário Completo'
+                    inventory={selectedInventory}
                 />
             </div>
             <div style={{ margin: '30px 0', display: 'flex', justifyContent: 'flex-end' }}>

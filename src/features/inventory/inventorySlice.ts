@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { api } from '../../services/api.service'
 import moment from 'moment-timezone';
-import { IProductInventory } from '../../types/TProduct';
+import { TInventory } from '../../types/TInventory';
 
 export const getAllInventories = createAsyncThunk(
     'inventory/getAllInventories',
@@ -33,20 +33,10 @@ export const deleteInventory = createAsyncThunk(
 
 export const editInventory = createAsyncThunk(
     'inventory/editInventory',
-    async (body: any, thunkAPI) => {
-        await api.patch(`/inventories/${body}`)
+    async ({ id, body }: { id: number, body: any }, thunkAPI) => {
+        await api.patch(`/inventories/${id}`, body)
     }
 )
-
-type TInventory = {
-    id: number,
-    inventory: IProductInventory[],
-    category: string,
-    createdAt: string,
-    user: {
-        name: string
-    }
-}
 
 type State = {
     inventories: TInventory[],

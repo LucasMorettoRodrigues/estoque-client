@@ -4,6 +4,7 @@ import productsReducer from '../features/product/productSlice';
 import authenticationReducer from '../features/authentication/authentication'
 import notificationReducer from '../features/notification/notificationSlice';
 import historicSlice from '../features/historic/historicSlice';
+import inventorySlice from '../features/inventory/inventorySlice';
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
     product: productsReducer,
     authentication: authenticationReducer,
     notification: notificationReducer,
-    historic: historicSlice
+    historic: historicSlice,
+    inventory: inventorySlice
   },
 });
 

@@ -1,27 +1,32 @@
-import { useLocation, useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useState } from "react"
-import { IProductInventory } from "../../types/TProduct"
 import Title from "../../components/UI/Title"
 import { TMessage } from "../../types/TMessage"
 import Mensagem from "../../components/UI/Mensagem"
 import InventarioList from "../../components/Inventario/InventarioList"
 import InventoryAnalisys from "../../components/Inventario/InventoryAnalisys"
 import Button from "../../components/UI/Button"
-import { useAppDispatch } from "../../app/hooks"
-import { createNotification, deleteNotification } from "../../features/notification/notificationSlice"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { createNotification } from "../../features/notification/notificationSlice"
 import { formatDate } from "../../utils/dateFunctions"
 import ModalInput from "../../components/UI/ModalInput"
+import { deleteInventory } from "../../features/inventory/inventorySlice"
 
 export default function VizualizarInventario() {
 
-    const { state }: any = useLocation()
+    const { id } = useParams()
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
 
-    const products: IProductInventory[] = state.data
+    const inventories = useAppSelector(state => state.inventory.inventories)
     const [message, setMessage] = useState<TMessage>()
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [daysUntilNextInventory, setDaysUntilNextInventory] = useState('')
+    const selectedInventory = id ? inventories.find(i => i.id === parseInt(id)) : null
+
+    if (!selectedInventory) return <></>
+
+    const products = selectedInventory.inventory
 
     const divergentProducts = products
         .map(product => (
@@ -38,7 +43,7 @@ export default function VizualizarInventario() {
 
     const handleDelete = async () => {
         try {
-            await dispatch(deleteNotification(state.id!)).unwrap()
+            await dispatch(deleteInventory(selectedInventory.id)).unwrap()
             setMessage({ title: 'Sucesso', message: 'O inventário foi deletado com êxito.' })
         } catch (error) {
             setMessage({ title: 'Erro', message: 'Não foi possível deletar o inventário' })
@@ -60,7 +65,7 @@ export default function VizualizarInventario() {
             category = 'Kits e Reagentes'
         }
 
-        const inventoryDate = new Date(state.createdAt)
+        const inventoryDate = new Date(selectedInventory.createdAt)
         var scheduleDate = inventoryDate.setDate(inventoryDate.getDate() + parseInt(daysUntilNextInventory));
         const notification = { description: `Agendamento de Inventário - ${category}`, data: new Date(scheduleDate) }
 
@@ -89,7 +94,7 @@ export default function VizualizarInventario() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Title title='Inventário' />
                 <div style={{ fontSize: 14, color: '#555' }}>
-                    <p style={{ marginBottom: '8px' }}>Realizado por {state.user?.name} em {formatDate(state.createdAt)}</p>
+                    <p style={{ marginBottom: '8px' }}>Realizado por {selectedInventory?.user?.name} em {formatDate(selectedInventory?.createdAt)}</p>
                 </div>
             </div>
             <InventoryAnalisys products={products} />

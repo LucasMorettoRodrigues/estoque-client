@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import DeliveryInfoAlert from "../../components/Alerts/ItemsToBuyAlert";
 import AdminPanelHeader from "../../components/AdminPanel/AdminPanelHeader";
 import Inbox from "../../components/AdminPanel/Inbox";
+import { getAllInventories } from "../../features/inventory/inventorySlice";
 
 export default function InboxPage() {
 
@@ -11,6 +12,7 @@ export default function InboxPage() {
 
     useEffect(() => {
         dispatch(getAllNotifications())
+        dispatch(getAllInventories())
     }, [dispatch])
 
     return (

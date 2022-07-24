@@ -40,6 +40,7 @@ import NovoProdutoTwo from "./pages/Produtos/CreateProduct";
 import EditProduct from "./pages/Produtos/EditProduct";
 import DashBoard from "./pages/AdminPanel/DashBoard";
 import { getAllNotifications } from "./features/notification/notificationSlice";
+import { getAllInventories } from "./features/inventory/inventorySlice";
 
 function App() {
 
@@ -51,6 +52,10 @@ function App() {
       dispatch(getProducts())
       dispatch(getFornecedores())
       dispatch(getAllHistoric())
+    }
+
+    if (authentication.role === 'admin') {
+      dispatch(getAllInventories())
       dispatch(getAllNotifications())
     }
   }, [dispatch, authentication])

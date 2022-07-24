@@ -2,7 +2,6 @@ import styled from "styled-components"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { createNotification } from "../../features/notification/notificationSlice"
 
 import { TMessage } from "../../types/TMessage"
 import { TProduct } from "../../types/TProduct"
@@ -20,6 +19,7 @@ import Select from "../../components/UI/Select"
 import Input from "../../components/UI/Input"
 import { formatDate, isExpired } from "../../utils/dateFunctions"
 import { activeProducts } from "../../app/selectors"
+import { createInventory } from "../../features/inventory/inventorySlice"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -130,15 +130,17 @@ export default function Inventario() {
                             ...subitem,
                             inventory: verifiedStock[subitem.id!].inventory,
                             justification: verifiedStock[subitem.id!].justification,
-                            reason: verifiedStock[subitem.id!].reason
+                            reason: verifiedStock[subitem.id!].reason,
+                            adjusted: false
                         }
                     ))
             }
         ))
 
         try {
-            await dispatch(createNotification({
-                notification: { description: 'Inventário', data },
+            await dispatch(createInventory({
+                inventory: data,
+                category: category.toString(),
                 username,
                 password
             })).unwrap()

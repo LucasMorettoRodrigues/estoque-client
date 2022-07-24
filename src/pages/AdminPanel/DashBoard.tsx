@@ -1,11 +1,8 @@
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts'
 import styled from 'styled-components'
 import { useAppSelector } from '../../app/hooks'
-import { inventoriesSelector } from '../../app/selectors'
 import AdminPanelHeader from '../../components/AdminPanel/AdminPanelHeader'
 import ChartPie from '../../components/Charts/PieChart'
-import { TNotification } from '../../types/TNotification'
-import { IProductInventory } from '../../types/TProduct'
 
 const ChartsContainer = styled.div`
     display: flex;
@@ -17,13 +14,9 @@ const ChartsContainer = styled.div`
     border-radius: 10px;
 `
 
-interface IInventory extends TNotification {
-    data: IProductInventory[]
-}
-
 export default function DashBoard() {
 
-    const inventories: IInventory[] = useAppSelector(inventoriesSelector)
+    const inventories = useAppSelector(state => state.inventory.inventories)
 
     const data: any = []
     let test: any = []
@@ -33,9 +26,9 @@ export default function DashBoard() {
     const colors = ['#00B7FF', '#67c7ff', '#0033c0', '#2a9cff', '#0073FF', '#001986', '#005CFF']
 
     inventories.forEach(inv => {
-        const allProducts = inv.data.map(i => i.subproducts!.length).reduce((sum, i) => sum + i, 0)
-        const divergentProducts = inv.data.map(i => i.subproducts!.filter(j => j.reason).length).reduce((sum, i) => sum + i, 0)
-        const rigthProducts = inv.data.map(i => i.subproducts!.filter(j => !j.reason).length).reduce((sum, i) => sum + i, 0)
+        const allProducts = inv.inventory.map(i => i.subproducts!.length).reduce((sum, i) => sum + i, 0)
+        const divergentProducts = inv.inventory.map(i => i.subproducts!.filter(j => j.reason).length).reduce((sum, i) => sum + i, 0)
+        const rigthProducts = inv.inventory.map(i => i.subproducts!.filter(j => !j.reason).length).reduce((sum, i) => sum + i, 0)
 
         rightProductsSum += rigthProducts
         divergentProductsSum += divergentProducts
@@ -44,7 +37,7 @@ export default function DashBoard() {
 
         data.unshift({ "date": inv.createdAt!.slice(0, 10), "ratio": Number(ratio) })
 
-        inv.data.forEach((item) => item.subproducts?.forEach(j => {
+        inv.inventory.forEach((item) => item.subproducts?.forEach(j => {
             if (j.reason) {
                 test.find((i: any) => i.name === j.reason)
                     ? test = test.map((k: any) => k.name === j.reason

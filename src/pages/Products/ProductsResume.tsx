@@ -79,7 +79,7 @@ export default function ProductsResume() {
                 <ListHeader>
                     <Item flex={8} text='Produto' cursor='pointer' onClick={() => setSort('name')} />
                     <Item flex={2} text='Fornecedores' cursor='pointer' onClick={() => setSort('providers')} />
-                    <Item flex={1} text='Estoque' align='center' />
+                    <Item flex={1} text='Estoque' align='center' cursor='pointer' onClick={() => setSort('stock')} />
                     <Item flex={1} text='Est. Mín' align='center' />
                     <Item flex={1} text='Est. Max' align='center' />
                 </ListHeader>

@@ -145,7 +145,7 @@ export default function ProductsDetail() {
                         <Item width="90px" text='Categoria' onClick={() => setSort('category')} cursor='pointer' fontSize='12px' />
                         <Item width="130px" text='Marca' onClick={() => setSort('brand')} cursor='pointer' fontSize='12px' />
                         <Item width="65px" text='Unidade' onClick={() => setSort('unit')} cursor='pointer' fontSize='12px' />
-                        <Item width="65px" text='Estoque' align='center' fontSize='12px' />
+                        <Item width="65px" text='Estoque' align='center' onClick={() => setSort('stock')} cursor='pointer' fontSize='12px' />
                         <Item width="65px" text='Est. Mín.' align='center' fontSize='12px' />
                         <Item width="65px" text='Est. Max.' align='center' fontSize='12px' />
                         <Item width="83px" text='Frequência Retirada' align='center' fontSize='12px' />

@@ -38,14 +38,14 @@ export default function ProductsResume() {
     const [sortedProducts, setSortedProducts] = useState<TProduct[]>([])
 
     useEffect(() => {
-        let produtos = products.slice()
+        let produtos = mergeProducts(products)
 
         sort ? setSortedProducts(compare(produtos, sort)) : setSortedProducts(produtos)
 
     }, [sort, products])
 
     useEffect(() => {
-        let filtered = mergeProducts(sortedProducts)
+        let filtered = sortedProducts
 
         if (missingFilter) {
             filtered = filtered.filter(i => i.stock < i.min_stock)

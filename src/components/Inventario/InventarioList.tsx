@@ -7,6 +7,7 @@ import ListWrapper from "../UI/ListWrapper"
 import { formatDate } from "../../utils/dateFunctions"
 import AdjustButton from "./AdjustButton"
 import { TInventory } from "../../types/TInventory"
+import { useNavigate, useParams } from "react-router-dom"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -29,7 +30,10 @@ type Props = {
 
 export default function InventarioList({ products, title, adjustButton, inventory }: Props) {
 
-    if (products.length === 0) {
+    const navigate = useNavigate()
+    const { id } = useParams()
+
+    if (products.length === 0 || !id) {
         return <></>
     }
 
@@ -71,6 +75,9 @@ export default function InventarioList({ products, title, adjustButton, inventor
                                 {item.subproducts &&
                                     item.subproducts.map((subitem) => (
                                         <ItemsContainer
+                                            onClick={subitem.justification ?
+                                                () => navigate(`/inventarios/${id}/${item.id}/${subitem.id}`) : () => { }
+                                            }
                                             type="subItem"
                                             bg={subitem.justification ? '#ffd2d2' : '#eef7ff'}
                                             key={subitem.id}

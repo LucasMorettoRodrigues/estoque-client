@@ -33,7 +33,7 @@ export default function Select({ name, label, display, ...rest }: SelectProps) {
             {label &&
                 <Label htmlFor={name} display={display}>{label}</Label>
             }
-            <CSelect id={name} {...rest}></CSelect>
+            <CSelect id={name} name={name} {...rest}></CSelect>
         </>
     )
 }

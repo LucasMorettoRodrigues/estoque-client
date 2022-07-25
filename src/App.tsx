@@ -41,6 +41,7 @@ import EditProduct from "./pages/Produtos/EditProduct";
 import DashBoard from "./pages/AdminPanel/DashBoard";
 import { getAllNotifications } from "./features/notification/notificationSlice";
 import { getAllInventories } from "./features/inventory/inventorySlice";
+import EditInventory from "./pages/Inventario/EditInventory";
 
 function App() {
 
@@ -105,6 +106,8 @@ function App() {
           <Route path='/usuarios/:id' element={<AdminRoute><EditUser /></AdminRoute>} />
           <Route path='/usuarios/:id/redefinirSenha' element={<AdminRoute><RedefinePassword /></AdminRoute>} />
           <Route path='/inventarios/:id' element={<AdminRoute><VizualizarInventario /></AdminRoute>} />
+          <Route path='/inventarios/:id/:product_id/:subProduct_id' element={<AdminRoute><EditInventory /></AdminRoute>} />
+
 
           <Route path='/dashboard/' element={<AdminRoute><DashBoard /></AdminRoute>} />
 

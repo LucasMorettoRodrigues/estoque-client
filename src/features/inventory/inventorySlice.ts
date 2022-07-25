@@ -33,8 +33,8 @@ export const deleteInventory = createAsyncThunk(
 
 export const editInventory = createAsyncThunk(
     'inventory/editInventory',
-    async ({ id, body }: { id: number, body: any }, thunkAPI) => {
-        await api.patch(`/inventories/${id}`, body)
+    async ({ id, payload }: { id: number, payload: any }, thunkAPI) => {
+        await api.patch(`/inventories/${id}`, payload)
     }
 )
 

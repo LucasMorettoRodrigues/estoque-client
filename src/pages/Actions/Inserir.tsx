@@ -22,6 +22,7 @@ import Loading from "../../components/UI/Loading"
 import { TMessage } from "../../types/TMessage"
 import { getProducts } from "../../features/product/productSlice"
 import SignOperation from "../../components/Actions/SignOperation"
+import { currencyMask } from "../../utils/masks"
 
 const InputContainer = styled.div<{ flex: number, minWidth?: string }>`
     flex: ${props => props.flex};
@@ -238,10 +239,8 @@ export default function Inserir() {
                         name="price"
                         label="Preço unitário"
                         required
-                        type='number'
-                        step='.01'
-                        min={0}
-                        onChange={(e) => setPrice(e.target.value)}
+                        type='string'
+                        onChange={(e) => setPrice(currencyMask(e).target.value)}
                     />
                 </InputContainer>
                 <InputContainer flex={1} minWidth='150px'>

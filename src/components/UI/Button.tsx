@@ -22,6 +22,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export default function Button({ text, onClick, bg, ...rest }: Props) {
+
     return (
         <SButton bg={bg} {...rest} onClick={onClick}>{text}</SButton>
     )

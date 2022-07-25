@@ -36,7 +36,7 @@ export default function Input({ name, label, display, ...rest }: InputProps) {
     return (
         <>
             <Label htmlFor={name} display={display}>{label}</Label>
-            <SInput id={name} {...rest}>
+            <SInput id={name} name={name} {...rest}>
             </SInput>
         </>
     )

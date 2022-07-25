@@ -12,7 +12,6 @@ import Title from "../../components/UI/Title"
 import { editProduct } from "../../features/product/productSlice"
 import { TMessage } from "../../types/TMessage"
 import { TProductRequest } from "../../types/TProduct"
-import { getProduct } from "../../utils/functions"
 import ListOperations from "../Historic/ListOperations"
 
 const InputContainer = styled.div`
@@ -42,8 +41,6 @@ export default function EditProduct() {
         label: `${i.id} - ${i.name} - ${i.brand} - ${i.unit}`, id: i.id
     }))
 
-    options.unshift({ label: 'Sem Aliquotagem', id: 0 })
-
     const editingProductInitialState: TProductRequest = {
         name: product.name,
         code: product.code,
@@ -60,30 +57,24 @@ export default function EditProduct() {
     }
 
     const [editingProduct, setEditingProduct] = useState(editingProductInitialState)
-
-    const [openAutoComplete, setOpenAutoComplete] = useState(false)
     const [childProductId, setChildProductId] = useState(product.product_child_id)
 
-    const selectedChildProduct = editingProduct.product_child_id && getProduct(products, editingProduct.product_child_id)
-    console.log(selectedChildProduct, editingProduct.product_child_id)
+    const handleOnChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
+        setEditingProduct({ ...editingProduct, [e.target.name]: e.target.value })
+    }
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         let editedProduct = editingProduct
 
-        if (openAutoComplete) {
-            editedProduct = {
-                ...editedProduct,
-                product_child_id: childProductId
-            }
-
-
+        editedProduct = {
+            ...editedProduct,
+            product_child_id: childProductId,
+            qty_to_child: (editedProduct.qty_to_child && childProductId) ? editedProduct.qty_to_child : null
         }
 
-        if (!productIsValid(editedProduct)) {
-            return
-        }
+        if (!productIsValid(editedProduct)) return console.log('erro')
 
         dispatch(editProduct({ id: product.id, product: editedProduct }))
         navigate('/produtos/detalhes')
@@ -101,14 +92,6 @@ export default function EditProduct() {
             (!product.product_child_id && product.qty_to_child)) return false
 
         return true
-    }
-
-    const validateNumberInput = (e: ChangeEvent<HTMLInputElement>, key: string) => {
-        if (parseInt(e.target.value)) {
-            setEditingProduct({ ...editingProduct, [key]: parseInt(e.target.value) })
-        } else {
-            setEditingProduct({ ...editingProduct, [key]: null })
-        }
     }
 
     const handleArchiveProduct = async (id: number) => {
@@ -136,18 +119,18 @@ export default function EditProduct() {
                 <div style={{ display: 'flex', width: '100%' }}>
                     <InputContainer style={{ marginRight: '40px' }}>
                         <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setEditingProduct({ ...editingProduct, name: e.target.value })}
-                            name={'name'}
-                            label={'Name'}
+                            onChange={(e) => handleOnChange(e)}
+                            name='name'
+                            label='Name'
                             value={editingProduct.name}
                             required
                         />
                     </InputContainer>
                     <InputContainer>
                         <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setEditingProduct({ ...editingProduct, code: e.target.value })}
-                            name={'codigo'}
-                            label={'Código'}
+                            onChange={(e) => handleOnChange(e)}
+                            name='code'
+                            label='Código'
                             value={editingProduct.code}
                             required
                         />
@@ -156,9 +139,9 @@ export default function EditProduct() {
                 <div style={{ display: 'flex', width: '100%' }}>
                     <InputContainer style={{ marginRight: '40px' }}>
                         <Select
-                            onChange={(e: ChangeEvent<HTMLSelectElement>) => setEditingProduct({ ...editingProduct, category: e.target.value })}
-                            name={'categoria'}
-                            label={'Categoria'}
+                            onChange={(e) => handleOnChange(e)}
+                            name='category'
+                            label='Categoria'
                             value={editingProduct.category}
                             required
                         >
@@ -170,9 +153,9 @@ export default function EditProduct() {
                     </InputContainer>
                     <InputContainer>
                         <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setEditingProduct({ ...editingProduct, brand: e.target.value })}
-                            name={'brand'}
-                            label={'Marca'}
+                            onChange={(e) => handleOnChange(e)}
+                            name='brand'
+                            label='Marca'
                             value={editingProduct.brand}
                             required
                         />
@@ -181,9 +164,9 @@ export default function EditProduct() {
                 <div style={{ display: 'flex', width: '100%' }}>
                     <InputContainer style={{ marginRight: '40px' }}>
                         <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setEditingProduct({ ...editingProduct, unit: e.target.value })}
-                            name={'unit'}
-                            label={'Unidade'}
+                            onChange={(e) => handleOnChange(e)}
+                            name='unit'
+                            label='Unidade'
                             value={editingProduct.unit}
                             required
                         />
@@ -191,20 +174,20 @@ export default function EditProduct() {
                     <div style={{ display: 'flex', flex: 1 }}>
                         <InputContainer style={{ marginRight: '40px' }}>
                             <Input
-                                onChange={(e) => validateNumberInput(e, 'min_stock')}
-                                name={'minStock'}
-                                label={'Estoque Mínimo'}
+                                onChange={(e) => handleOnChange(e)}
+                                name='min_stock'
+                                label='Estoque Mínimo'
                                 type='number'
                                 value={editingProduct.min_stock}
-                                min={0}
+                                min={-1}
                                 required
                             />
                         </InputContainer>
                         <InputContainer>
                             <Input
-                                onChange={(e) => validateNumberInput(e, 'max_stock')}
-                                name={'maxStock'}
-                                label={'Estoque Máximo'}
+                                onChange={(e) => handleOnChange(e)}
+                                name='max_stock'
+                                label='Estoque Máximo'
                                 type='number'
                                 value={editingProduct.max_stock}
                                 min={0}
@@ -216,17 +199,17 @@ export default function EditProduct() {
                 <div style={{ display: 'flex', width: '100%' }}>
                     <InputContainer style={{ marginRight: '40px' }}>
                         <Input
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setEditingProduct({ ...editingProduct, observation: e.target.value })}
-                            name={'obervation'}
-                            label={'Observação'}
+                            onChange={(e) => handleOnChange(e)}
+                            name='observation'
+                            label='Observação'
                             value={editingProduct.observation || ''}
                         />
                     </InputContainer>
                     <InputContainer>
                         <Input
-                            onChange={(e) => validateNumberInput(e, 'delivery_time')}
-                            name={'deliveryTime'}
-                            label={'Previsão de entrega (semanas)'}
+                            onChange={(e) => handleOnChange(e)}
+                            name='delivery_time'
+                            label='Previsão de entrega (semanas)'
                             value={editingProduct.delivery_time || ''}
                             type='number'
                         />
@@ -234,52 +217,35 @@ export default function EditProduct() {
                 </div>
                 <div style={{ width: '100%' }}>
                     <InputContainer>
-                        {!openAutoComplete &&
-                            <div style={{ display: 'flex' }}>
-                                <div style={{ width: '100%' }}>
-                                    <Input disabled name="child" label='Aliquotagem' value={selectedChildProduct ? `${selectedChildProduct.name} - ${selectedChildProduct.brand} - ${selectedChildProduct.unit}` : 'Sem Aliquotagem'} />
-                                </div>
+                        <div style={{ display: 'flex', width: '100%' }}>
+                            <InputContainer>
+                                <p style={{ marginLeft: '2px', marginBottom: '4px', color: '#666', fontSize: '15px', fontWeight: 400 }}>Aliquotagem</p>
+                                <Autocomplete
+                                    disablePortal
+                                    value={options.find(item => item.id === childProductId) || null}
+                                    onChange={(_, newValue) => setChildProductId(newValue?.id || null)}
+                                    isOptionEqualToValue={(option, value) => option.id === value.id}
+                                    id="select"
+                                    options={options}
+                                    sx={{ backgroundColor: 'white' }}
+                                    renderInput={(params) => <TextField {...params} label="Produto" size='small' />}
+                                />
+                            </InputContainer>
+                            {childProductId &&
                                 <InputContainer
                                     style={{ marginLeft: '40px', minWidth: '240px', flex: 0 }}
                                 >
                                     <Input
-                                        name={'qtyToChild'}
-                                        label={'Qtd. de aliq. mín. para estoque'}
-                                        value={editingProduct.qty_to_child || ''}
-                                        disabled
-                                        type='number'
-                                    />
-                                </InputContainer>
-                                <Button style={{ marginLeft: '40px', whiteSpace: 'nowrap', alignSelf: 'center' }} bg='blue' text="Editar Aliquotagem" onClick={() => setOpenAutoComplete(true)} />
-                            </ div>
-                        }
-                        {openAutoComplete &&
-                            <div style={{ display: 'flex', width: '100%' }}>
-                                <InputContainer>
-                                    <p style={{ marginLeft: '2px', marginBottom: '4px', color: '#666', fontSize: '15px', fontWeight: 400 }}>Aliquotagem</p>
-                                    <Autocomplete
-                                        disablePortal
-                                        onChange={(_, newValue) => setChildProductId(newValue?.id || null)}
-                                        isOptionEqualToValue={(option, value) => option.id === value.id}
-                                        id="select"
-                                        options={options}
-                                        sx={{ backgroundColor: 'white' }}
-                                        renderInput={(params) => <TextField {...params} label="Produto" size='small' />}
-                                    />
-                                </InputContainer>
-                                <InputContainer
-                                    style={{ marginLeft: '40px', minWidth: '240px', flex: 0 }}
-                                >
-                                    <Input
-                                        onChange={(e) => validateNumberInput(e, 'qty_to_child')}
-                                        name={'qtyToChild'}
-                                        label={'Qtd. de aliq. mín. para estoque'}
+                                        onChange={(e) => handleOnChange(e)}
+                                        name='qty_to_child'
+                                        label='Qtd. de aliq. mín. para estoque'
                                         value={editingProduct.qty_to_child || ''}
                                         type='number'
                                     />
                                 </InputContainer>
-                            </div>
-                        }
+                            }
+
+                        </div>
                     </InputContainer>
                 </div>
                 <ButtonContainer>

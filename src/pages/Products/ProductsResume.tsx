@@ -24,7 +24,7 @@ const MenuContainer = styled.div`
     margin-bottom: 20px;
 `
 
-export default function Produtos() {
+export default function ProductsResume() {
 
     const navigate = useNavigate()
 

@@ -47,7 +47,7 @@ const ExpandIconContainer = styled.div<{ bg: string }>`
     }
 `
 
-export default function Detalhes() {
+export default function ProductsDetail() {
 
     const navigate = useNavigate()
 

@@ -38,7 +38,7 @@ const reasons = [
     'Contagem inventário incorreta'
 ]
 
-export default function Inventario() {
+export default function DoingInventory() {
 
     const productsData = useAppSelector(activeProducts)
     const dispatch = useAppDispatch()

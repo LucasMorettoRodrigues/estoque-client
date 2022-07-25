@@ -1,18 +1,19 @@
+import styled from "styled-components"
 import { Autocomplete, TextField } from "@mui/material"
 import { useState, FormEvent, ChangeEvent } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
-import styled from "styled-components"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { editProduct } from "../../features/product/productSlice"
+import { TMessage } from "../../types/TMessage"
+import { TProductRequest } from "../../types/TProduct"
+
+import ListOperations from "../Historic/ListOperations"
 import Button from "../../components/UI/Button"
 import Form from "../../components/UI/Form"
 import Input from "../../components/UI/Input"
 import Mensagem from "../../components/UI/Mensagem"
 import Select from "../../components/UI/Select"
 import Title from "../../components/UI/Title"
-import { editProduct } from "../../features/product/productSlice"
-import { TMessage } from "../../types/TMessage"
-import { TProductRequest } from "../../types/TProduct"
-import ListOperations from "../Historic/ListOperations"
 
 const InputContainer = styled.div`
     margin-bottom: 20px;

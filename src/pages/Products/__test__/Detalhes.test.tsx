@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import Detalhes from '../Detalhes'
+import Detalhes from '../ProductsDetail'
 import { BrowserRouter } from 'react-router-dom';
 import { mockStore, useSelectorMock } from '../../../__mocks__/redux';
 

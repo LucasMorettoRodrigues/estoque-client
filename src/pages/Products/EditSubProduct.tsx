@@ -15,7 +15,7 @@ const InputContainer = styled.div`
     margin-bottom: 20px;
 `
 
-export default function EditarSubProduto() {
+export default function EditSubProduct() {
 
     const location = useLocation()
     const dispatch = useAppDispatch()

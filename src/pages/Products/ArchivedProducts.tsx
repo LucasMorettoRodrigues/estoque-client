@@ -24,7 +24,7 @@ const ButtonContainer = styled.div`
     margin-bottom: 20px;
 `
 
-export default function ProdutosEscondidos() {
+export default function ArchivedProducts() {
 
     const navigate = useNavigate()
     const dispatch = useAppDispatch()

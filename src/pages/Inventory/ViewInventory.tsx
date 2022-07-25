@@ -12,7 +12,7 @@ import { formatDate } from "../../utils/dateFunctions"
 import ModalInput from "../../components/UI/ModalInput"
 import { deleteInventory } from "../../features/inventory/inventorySlice"
 
-export default function VizualizarInventario() {
+export default function ViewInventory() {
 
     const { id } = useParams()
     const navigate = useNavigate()

@@ -1,13 +1,14 @@
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
 import { useAppSelector } from "../../app/hooks"
+import { productsToAliquotSelector } from "../../app/selectors"
+import { formatDate, isExpired } from "../../utils/dateFunctions"
+
 import ListHeader from "../../components/List/ListHeader"
 import Item from "../../components/List/Item"
 import ItemsContainer from "../../components/List/ItemsContainer"
 import Title from "../../components/UI/Title"
 import ListWrapper from "../../components/UI/ListWrapper"
-import { productsToAliquotSelector } from "../../app/selectors"
-import { formatDate, isExpired } from "../../utils/dateFunctions"
 
 const Container = styled.div``
 const HeaderContainer = styled.div`
@@ -26,7 +27,6 @@ const Message = styled.p`
 export default function ToAliquot() {
 
     const navigate = useNavigate()
-
     const productsToAliquot = useAppSelector(productsToAliquotSelector)
 
     if (productsToAliquot.length === 0) {
@@ -39,7 +39,7 @@ export default function ToAliquot() {
 
     return (
         <>
-            <Title title='Produtos Em Espera Para Aliquotagem' />
+            <Title title='Alíquotas - Produtos em espera' />
 
             <ListWrapper>
                 <HeaderContainer>
@@ -59,15 +59,14 @@ export default function ToAliquot() {
                             <Container key={item.id}>
 
                                 <ItemsContainer >
-                                    <Item flex={3} text={item.name} fontSize='12px' />
-                                    <Item flex={2} text={item.observation} fontSize='12px' />
-                                    <Item width="90px" text={item.code} fontSize='12px' />
-                                    <Item width="90px" text={item.category} fontSize='12px' />
-                                    <Item width="130px" text={item.brand} fontSize='12px' />
-                                    <Item width="65px" text={item.unit} fontSize='12px' />
-                                    <Item width="65px" text={item.stock} align='center' fontSize='12px' />
+                                    <Item flex={3} text={item.name} />
+                                    <Item flex={2} text={item.observation} />
+                                    <Item width="90px" text={item.code} />
+                                    <Item width="90px" text={item.category} />
+                                    <Item width="130px" text={item.brand} />
+                                    <Item width="65px" text={item.unit} />
+                                    <Item width="65px" text={item.stock} align='center' />
                                 </ItemsContainer>
-
 
                                 {item.subproducts &&
                                     item.subproducts.map((subitem) => (
@@ -79,9 +78,7 @@ export default function ToAliquot() {
                                                 navigate(`/aliquotagem/${item.id}/${subitem.id}`,
                                                     { state: subitem })}
                                         >
-                                            <div style={{ marginLeft: '60px' }}>
-                                                <Item width='200px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
-                                            </div>
+                                            <Item width='200px' color='#3142a0' text={`Lote: ${subitem.lote}`} />
                                             <Item
                                                 width='280px'
                                                 color={isExpired(subitem.validade!) ? 'red' : '#3142a0'}

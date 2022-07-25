@@ -183,7 +183,7 @@ export default function Navbar() {
                             }
                             <Link to='/aliquotagem/em-espera'>
                                 <Item>
-                                    Alíquotagem
+                                    Alíquotas
                                     {productsToAliquot.length > 0 && <Badge>{productsToAliquot.length}</Badge>}
                                 </Item>
                             </Link>

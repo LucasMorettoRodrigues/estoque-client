@@ -126,8 +126,8 @@ export default function Aliquoting() {
                         brand={originProduct.brand}
                         obs={originProduct.observation ? originProduct.observation : ''}
                         lote={originProduct.subProduct?.lote}
-                        validade={originProduct.subProduct!.validade || 'Ind.'}
-                        quantity={originProduct.subProduct!.quantity}
+                        validade={originProduct.subProduct?.validade || 'Ind.'}
+                        quantity={originProduct.subProduct?.quantity}
                         unit={originProduct.unit}
                     />
                 }
@@ -152,7 +152,7 @@ export default function Aliquoting() {
                         brand={destinyProduct.brand}
                         obs={destinyProduct.observation ? destinyProduct.observation : ''}
                         lote={destinyProduct.subProduct?.lote!}
-                        validade={destinyProduct.subProduct!.validade || 'Ind.'}
+                        validade={destinyProduct.subProduct?.validade || 'Ind.'}
                         quantity={destinyProduct.subProduct?.quantity}
                         unit={destinyProduct.unit}
                     />
